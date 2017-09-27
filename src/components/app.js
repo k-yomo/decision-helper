@@ -19,21 +19,22 @@ class Action extends Component {
   render() {
     return (
       <div>
-        <button onClick={this.handlePick}>What shoud I do?</button>
+        <button
+          onClick={this.handlePick}
+          disabled={this.props.hasOptions}
+          >What shoud I do?
+        </button>
       </div>
     );
   }
 }
 
 class Options extends Component {
-  handleRemoveAll() {
-    alert("removeALl");
-  }
 
   render() {
     return (
       <div>
-        <button onClick={this.handleRemoveAll}>Remove ALL</button>
+        <button onClick={this.props.handleDeleteOptions}>Remove ALL</button>
         {this.props.options.map(option => <Option key={option} optionText={option} />)}
       </div>
     );
@@ -72,18 +73,30 @@ class AddOption extends Component {
 export default class App extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      options: ['Thing one', 'Thing two', 'Thing three']
+    };
+    this.handleDeleteOptions = this.handleDeleteOptions.bind(this);
+  }
+
+  handleDeleteOptions() {
+    this.setState(() => {
+      return { options: []}
+    });
   }
 
   render() {
     const title = 'Decision Helper';
     const subtitle = 'Put your life in the hands of a computer';
-    const options = ['Thing one', 'Thing two', 'Thing three'];
 
     return (
       <div>
         <Header title={title} subtitle={subtitle} />
-        <Action />
-        <Options options={options} />
+        <Action hasOptions={this.state.options.length === 0} />
+        <Options
+          options={this.state.options}
+          handleDeleteOptions={this.handleDeleteOptions}
+        />
         <AddOption />
       </div>
     );
