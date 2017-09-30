@@ -12,16 +12,13 @@ class Header extends Component {
 }
 
 class Action extends Component {
-  handlePick() {
-
-  }
 
   render() {
     return (
       <div>
         <button
-          onClick={this.handlePick}
-          disabled={this.props.hasOptions}
+          onClick={this.props.handlePick}
+          disabled={!this.props.hasOptions}
           >What shoud I do?
         </button>
       </div>
@@ -77,12 +74,18 @@ export default class App extends Component {
       options: ['Thing one', 'Thing two', 'Thing three']
     };
     this.handleDeleteOptions = this.handleDeleteOptions.bind(this);
+    this.handlePick = this.handlePick.bind(this);
   }
 
   handleDeleteOptions() {
     this.setState(() => {
-      return { options: []}
+      return { options: [] }
     });
+  }
+
+  handlePick() {
+    const randomIndex = Math.floor(Math.random() * this.state.options.length);
+    alert(this.state.options[randomIndex]);
   }
 
   render() {
@@ -92,7 +95,10 @@ export default class App extends Component {
     return (
       <div>
         <Header title={title} subtitle={subtitle} />
-        <Action hasOptions={this.state.options.length === 0} />
+        <Action
+          hasOptions={this.state.options.length > 0}
+          handlePick={this.handlePick}
+         />
         <Options
           options={this.state.options}
           handleDeleteOptions={this.handleDeleteOptions}
