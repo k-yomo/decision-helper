@@ -3,17 +3,19 @@ import AddOption from './AddOption';
 import Header from './Header';
 import Options from './Options'
 import Action from './Action'
-
+import OptionModal from './OptionModal'
 export default class DicisionHelper extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      options: props.options
-    };
+      options: props.options,
+      selectedOption: undefined
+    }
 
     this.handleDeleteOptions = this.handleDeleteOptions.bind(this);
     this.handlePick = this.handlePick.bind(this);
     this.handleAddOption = this.handleAddOption.bind(this);
+    this.handleClearSelectedOption = this.handleClearSelectedOption.bind(this);
     this.handleDeleteOption = this.handleDeleteOption.bind(this);
   }
 
@@ -51,7 +53,7 @@ export default class DicisionHelper extends Component {
 
   handlePick() {
     const randomIndex = Math.floor(Math.random() * this.state.options.length);
-    alert(this.state.options[randomIndex]);
+    this.setState(() => ({ selectedOption: this.state.options[randomIndex] }));
   }
 
   handleAddOption(option) {
@@ -62,6 +64,10 @@ export default class DicisionHelper extends Component {
     }
 
     this.setState(prevState => ({ options: prevState.options.concat([option])}));
+  }
+
+  handleClearSelectedOption() {
+    this.setState(() => ({ selectedOption: undefined }));
   }
 
   render() {
@@ -82,6 +88,7 @@ export default class DicisionHelper extends Component {
         <AddOption
           handleAddOption={this.handleAddOption}
          />
+        <OptionModal selectedOption={this.state.selectedOption} handleClearSelectedOption={this.handleClearSelectedOption} />
       </div>
     );
   }
