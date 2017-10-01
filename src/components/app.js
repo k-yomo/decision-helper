@@ -1,98 +1,10 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import AddOption from './AddOption';
+import Header from './Header';
+import Options from './Options'
+import Action from './Action'
 
-const Header = (props) => {
-  return (
-    <div>
-      <h1>{props.title}</h1>
-      {props.subtitle && <h3>{props.subtitle}</h3>}
-    </div>
-  );
-};
-
-Header.defaultProps = {
-  title: 'Desicion Helper',
-}
-
-const Action = (props) => {
-  return (
-    <div>
-      <button
-        onClick={props.handlePick}
-        disabled={!props.hasOptions}
-        >What shoud I do?
-      </button>
-    </div>
-  );
-};
-
-const Options = (props) => {
-  return (
-    <div>
-      <button onClick={props.handleDeleteOptions}>Remove ALL</button>
-      {props.options.length === 0 && <p>Please add an option to get started!</p>}
-      {props.options.map(option => (
-        <Option
-          key={option}
-          optionText={option}
-          handleDeleteOption={props.handleDeleteOption}
-         />
-      ))}
-    </div>
-  );
-}
-
-const Option = (props) => {
-  return (
-    <div>
-      {props.optionText}
-      <button
-        onClick={(e) => {
-          props.handleDeleteOption(props.optionText);
-        }}
-      >
-        remove
-      </button>
-    </div>
-  );
-}
-
-class AddOption extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      error: undefined
-    };
-
-    this.handleAddOption = this.handleAddOption.bind(this);
-  }
-
-  handleAddOption(e) {
-    e.preventDefault();
-    const option = e.target.elements.option.value.trim();
-    const error = this.props.handleAddOption(option);
-
-    this.setState(() => ({ error }));
-
-    if (!error) {
-      e.target.elements.option.value = '';
-    }
-  }
-
-  render() {
-	   return (
-       <div>
-         {this.state.error && <p>{this.state.error}</p>}
-         <form onSubmit={this.handleAddOption} >
-           <input type="text" name="option" />
-           <button>Add Option</button>
-         </form>
-      </div>
-     );
-  }
-}
-
-
-export default class App extends Component {
+export default class DicisionHelper extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -143,7 +55,7 @@ export default class App extends Component {
   }
 
   handleAddOption(option) {
-    if (!option) {
+  if (!option) {
       return 'Enter valid value to add item'
     } else if (this.state.options.indexOf(option) > -1) {
       return 'This option already exists'
@@ -175,6 +87,6 @@ export default class App extends Component {
   }
 }
 
-App.defaultProps = {
+DicisionHelper.defaultProps = {
   options: []
 }
